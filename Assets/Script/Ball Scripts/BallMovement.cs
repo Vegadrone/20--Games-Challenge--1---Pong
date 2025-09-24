@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class BallMovement : MonoBehaviour
 {
-    [SerializeField] private float speed = 0;
+    [SerializeField] private float startSpeed = 0f;
+    [SerializeField]private float maxSpeed = 10f;
 
     Rigidbody2D ballRb;
 
@@ -11,14 +12,22 @@ public class BallMovement : MonoBehaviour
         ballRb = GetComponent<Rigidbody2D>();
     }
 
-    private void FixedUpdate()
+    private void Start()
     {
-        AddingForceToBall();
+        LaunchTheBall();
     }
 
-    private void AddingForceToBall()
+    private void FixedUpdate()
     {
-        Vector2 moveDirection = new Vector2(1, 1);
-        ballRb.AddForce(moveDirection * speed);
+        if (ballRb.linearVelocity.magnitude > maxSpeed)
+        {
+            ballRb.linearVelocity =  ballRb.linearVelocity.normalized * maxSpeed;
+        }
+    }
+
+    private void LaunchTheBall()
+    {
+        Vector2 moveDirection = new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f));
+        ballRb.linearVelocity = moveDirection.normalized * startSpeed;
     }
 }
