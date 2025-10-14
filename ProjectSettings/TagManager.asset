@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Collision
+  - P2Goal
+  - P1Goal
+  - Ball
   layers:
   - Default
   - TransparentFX
