@@ -8,6 +8,8 @@ public class Goal : MonoBehaviour
     [SerializeField] private AudioClip goalSound;
     [SerializeField] private float goalVolume;
 
+    
+
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision && playerId == "1")
@@ -29,6 +31,6 @@ public class Goal : MonoBehaviour
     private IEnumerator ReloadCoroutine()
     {
         yield return new WaitForSeconds(0.8f);
-        SceneManager.LoadScene(0);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

@@ -1,35 +1,66 @@
+using System;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] float speed = 10;
+    [SerializeField] float tolerance = 0.2f;
+    [SerializeField] private BallMovement ballMovement;    
     Rigidbody2D myRb;
+    private Vector2 restPos;
 
     void Awake()
     {
         myRb = GetComponent<Rigidbody2D>();
+        restPos = transform.position;
     }
     void FixedUpdate()
     {
-        PlayerMovement();
+        EnemyMovement();
     }
 
-    private void PlayerMovement()
-    {
+    // private void PlayerMovement()
+    // {
       
-        float moveY = 0f;
+    //     float moveY = 0f;
 
-        if (Keyboard.current.upArrowKey.isPressed)
+    //     if (Keyboard.current.upArrowKey.isPressed)
+    //     {
+    //         moveY = 1f;
+    //     }
+    //     else if (Keyboard.current.downArrowKey.isPressed)
+    //     {
+    //         moveY = -1f;
+    //     }
+
+    //     Vector2 moveDirection = new Vector2(0, moveY).normalized;
+    //     myRb.linearVelocity = moveDirection * speed;
+    // }
+    
+    private void EnemyMovement()
+    {
+        Vector2 targetDirection;
+
+        if (ballMovement.GetBallPosition().x > 0)
         {
-            moveY = 1f;
+            targetDirection = ballMovement.GetBallPosition();
+
         }
-        else if (Keyboard.current.downArrowKey.isPressed)
+        else
         {
-            moveY = -1f;
+            targetDirection = restPos;
         }
 
-        Vector2 moveDirection = new Vector2(0, moveY).normalized;
-        myRb.linearVelocity = moveDirection * speed;
+        if (MathF.Abs(targetDirection.y - transform.position.y) < tolerance)
+        {
+            myRb.linearVelocity = Vector2.zero;
+        }
+        else
+        {
+            Vector2 moveDirection = new Vector2(0, targetDirection.y - transform.position.y).normalized;
+            myRb.linearVelocity = moveDirection * speed;
+        }
+    
     }
 }
